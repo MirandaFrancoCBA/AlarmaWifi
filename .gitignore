@@ -1,0 +1,25 @@
+# Entornos virtuales
+alarma-wifi/
+
+# Archivos de entorno
+.env
+
+# Archivos y carpetas de compilación de Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg-info/
+
+# Archivos de logs
+*.log
+logs/
+
+# Archivos de IDEs o editores
+.vscode/
+.idea/
+
+# Configuraciones del sistema operativo
+.DS_Store
+Thumbs.db
