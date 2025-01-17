@@ -1,25 +1,31 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import sqlitecloud
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
 class Movimiento(BaseModel):
-
     sensor_id: str
     timestamp: str
     valor: float
 
 def conexion_base_datos():
+
+    api_key = os.getenv("SQLITECLOUD_API_KEY")
+    if not api_key:
+        raise Exception("API key not found in environment variables.")
+    
     conector = sqlitecloud.connect(
-        url="sqlitecloud://ccmk1asnnk.sqlite.cloud:8860/alarm-database?apikey=vIawZmLuIcyTnWDxRhbQ0aNFQGUtBXM4abWk8KvJgbw",
-        api_key="<admin_apikey>"
+        url="sqlitecloud://ccmk1asnnk.sqlite.cloud:8860/alarm-database?apikey=" + api_key,
+        api_key=api_key
     )
-    #conector.row_factory = sqlite3.Row
     return conector
 
 @app.post("/movimientos/")
-
 def registrar_movimiento(movimiento: Movimiento):
     try:
         conector = conexion_base_datos()
@@ -34,12 +40,8 @@ def registrar_movimiento(movimiento: Movimiento):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al registrar movimiento: {str(e)}")
-    
-
-
 
 @app.get("/movimientos/")
-
 def obtener_movimientos():
     try:
         conector = conexion_base_datos()
@@ -48,4 +50,4 @@ def obtener_movimientos():
         return [dict(movimiento) for movimiento in movimientos]
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener movimientos: {str(e)}")   
+        raise HTTPException(status_code=500, detail=f"Error al obtener movimientos: {str(e)}")
