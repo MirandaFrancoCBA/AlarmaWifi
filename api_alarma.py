@@ -39,6 +39,7 @@ def registrar_movimiento(movimiento: Movimiento):
         return {"status": "Movimiento registrado"}
     
     except Exception as e:
+        print(f"Error al registrar movimiento: {str(e)}")  # Log del error completo
         raise HTTPException(status_code=500, detail=f"Error al registrar movimiento: {str(e)}")
 
 @app.get("/movimientos/")
