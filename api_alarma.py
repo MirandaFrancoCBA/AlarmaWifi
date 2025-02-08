@@ -20,9 +20,8 @@ def conexion_base_datos():
         raise Exception("API key not found in environment variables.")
     
     conector = sqlitecloud.connect(
-        "sqlitecloud://ccmk1asnnk.sqlite.cloud:8860/alarm-database?apikey=" + api_key,
-        api_key=api_key
-    )
+        "sqlitecloud://ccmk1asnnk.sqlite.cloud:8860/alarm-database?apikey=" + api_key)
+    
     return conector
 
 @app.post("/movimientos/")
